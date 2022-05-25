@@ -1,5 +1,6 @@
 package com.jwt.provider;
 
+import com.jwt.exception.JwtRuntimeException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Setter;
@@ -55,20 +56,15 @@ public class JwtAuthProvider {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
         } catch (SecurityException e) {
-            log.info("Invalid JWT signature.");
-            throw new SecurityException();
+            throw new JwtRuntimeException("Invalid JWT signature.");
         } catch (MalformedJwtException e) {
-            log.info("Invalid JWT token.");
-            throw new MalformedJwtException("invalid");
+            throw new JwtRuntimeException("Malformed JWT token.");
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-            throw new ExpiredJwtException(null, null, "expired");
+            throw new JwtRuntimeException("Expired JWT token.");
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-            throw new UnsupportedJwtException("unsupported");
+            throw new JwtRuntimeException("Unsupported JWT token.");
         } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-            throw new IllegalArgumentException();
+            throw new JwtRuntimeException("JWT token compact of handler are invalid.");
         }
     }
 }
