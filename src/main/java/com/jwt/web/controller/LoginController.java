@@ -24,7 +24,7 @@ public class LoginController {
         log.info("email={}", email);
         log.info("password={}", password);
 
-        Optional<String> jwtAuthToken = jwtAuthProvider.createJwtAuthToken(email);
+        Optional<String> jwtAuthToken = jwtAuthProvider.createJwtAuthToken(email, "USER");
         jwtAuthToken.ifPresent(s -> CLIENT_TOKEN = s);
 
         log.info("client get token: {}", CLIENT_TOKEN);

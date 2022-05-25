@@ -1,5 +1,6 @@
 package com.jwt.provider;
 
+import com.jwt.core.Role;
 import com.jwt.provider.JwtAuthProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         if(token.isPresent()) {
             jwtAuthProvider.setToken(token.get()); //클라이언트에게 받은 토큰
-            if(jwtAuthProvider.validate()) {
+            if(jwtAuthProvider.validate() & Role.USER.getCode().equals(jwtAuthProvider.getData().get("role"))) {
                 log.info("jwt valid");
                 return true;
             } else {

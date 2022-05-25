@@ -35,11 +35,12 @@ public class JwtAuthProvider {
         key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
-    public Optional<String> createJwtAuthToken(String email) {
+    public Optional<String> createJwtAuthToken(String email, String role) {
         final ZonedDateTime now = ZonedDateTime.now();
         var token = Jwts.builder()
                 .setSubject("access_token")
                 .claim("email", email)
+                .claim("role", role)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .setIssuedAt(Date.from(now.toInstant()))
                 .setExpiration(Date.from(now.toInstant().plusSeconds(tokenExpiredTime)))
